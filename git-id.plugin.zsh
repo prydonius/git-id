@@ -5,14 +5,19 @@ git() {
 
 git-id() {
   _git-id-get-id
-  [ "$GIT_ID[1]" != "GIT_ID_NULL" ] \
-    && [ "$(command git config user.name)" != "$GIT_ID[1]" ] \
-    && echo "Setting local git user name to $GIT_ID[1]" \
-    && $(command git config --local user.name $GIT_ID[1])
-  [ "$GIT_ID[2]" != "GIT_ID_NULL" ] \
-    && [ "$(command git config user.email)" != "$GIT_ID[2]" ] \
-    && echo "Setting local git user email to $GIT_ID[2]" \
-    && $(command git config --local user.email $GIT_ID[2])
+
+  # Array compatibility for ZSH
+  [ -n "$ZSH_VERSION" ] && set -o KSH_ARRAYS
+
+  [ "${GIT_ID[0]}" != "GIT_ID_NULL" ] \
+    && [ "$(command git config user.name)" != "${GIT_ID[0]}" ] \
+    && echo "Setting local git user name to ${GIT_ID[0]}" \
+    && $(command git config --local user.name ${GIT_ID[0]})
+  [ "${GIT_ID[1]}" != "GIT_ID_NULL" ] \
+    && [ "$(command git config user.email)" != "${GIT_ID[1]}" ] \
+    && echo "Setting local git user email to ${GIT_ID[1]}" \
+    && $(command git config --local user.email ${GIT_ID[1]})
+
   unset GIT_ID
 }
 
